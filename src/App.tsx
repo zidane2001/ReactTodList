@@ -22,17 +22,23 @@ function App() {
   // Une liste de tâches
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
 //compter les occurences de chaque tâches
-  const UrgenteCounter = todos.filter((todo) => todo.priority === "Urgente").length;
-  const MoyenneCounter = todos.filter((todo) => todo.priority === "Moyenne").length;
-  const BasseCounter = todos.filter((todo) => todo.priority === "Basse").length;
-  const TotalCounter = todos.length;
-
   const [filter, setFilter] = useState<Priority | "Toutes">("Toutes")
 
   useEffect(() => {
   localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos])
   
+  const UrgenteCounter = todos.filter((todo) => todo.priority === "Urgente").length;
+  const MoyenneCounter = todos.filter((todo) => todo.priority === "Moyenne").length;
+  const BasseCounter = todos.filter((todo) => todo.priority === "Basse").length;
+  const TotalCounter = todos.length;
+  
+  // Ajout de la fonctions de suppression de todo
+  function deleteTodo(id: number) {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);    
+  } 
+
   function addTodo () {
     if (input.trim() === "") return
 
@@ -105,28 +111,28 @@ function App() {
           <div className='flex flex-wrap gap-4'>
             <button
               className={ `btn btn-soft ${filter === "Toutes" ? "btn-primary " : "" }`} onClick={() => setFilter("Toutes")}>
-              Tous {(TotalCounter)}
+              Tous ({TotalCounter})
             </button>
             <button
               className={ `btn btn-soft ${filter === "Urgente" ? "btn-primary " : "" }`} onClick={() => setFilter("Urgente")}>
-              Urgente {(UrgenteCounter)}
+              Urgente ({UrgenteCounter})
             </button>
 
              <button
               className={ `btn btn-soft ${filter === "Moyenne" ? "btn-primary " : "" }`} onClick={() => setFilter("Moyenne")}>
-            Moyenne {(MoyenneCounter)}
+            Moyenne ({MoyenneCounter})
             </button>
 
              <button
               className={ `btn btn-soft ${filter === "Basse" ? "btn-primary " : "" }`} onClick={() => setFilter("Basse")}>
-            Basse {(BasseCounter)}            
-            </button> 
+            Basse ({BasseCounter})
+            </button>
           </div>
           {filteredTodos.length > 0 ? (
             <ul className='divide-y divide-primary/20'>
               {filteredTodos.map((todo) => (
                 <li key={todo.id}>
-                 <TodoItem todo={todo} />
+                 <TodoItem  todo={todo}  onDelete={() => deleteTodo(todo.id)}/>
                 </li>
               ))}
             </ul>
