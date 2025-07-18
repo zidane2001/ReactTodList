@@ -78,6 +78,26 @@ function App() {
     setSelecTodos(newSelectedTodos);
   };
 
+  function finishedSelected() {
+    const newTodos = todos.filter((todo) => {
+      if (selectedTodos.has(todo.id)) {
+    
+      return false
+    
+    } else {
+      return true;
+    }
+    });
+  
+      setTodos(newTodos);
+    setSelecTodos(new Set());
+    
+}
+
+
+
+
+
   return (
     <div className="flex justify-center items-center ">
       <div className="w-2/3 flex-col space-y-4 gap-4 my-15 bg-base-300 p-5 rounded-2xl">
@@ -122,34 +142,38 @@ function App() {
           </button>
         </div>
         <div className='space-y-2 flex-1 h-fit'>
-           
+
           <div className='flex justify-between items-center'>
-              <div className='flex flex-wrap gap-4'>
-            <button
-              className={`btn btn-soft ${filter === "Toutes" ? "btn-primary " : ""}`} onClick={() => setFilter("Toutes")}>
-              Tous ({TotalCounter})
-            </button>
-            <button
-              className={`btn btn-soft ${filter === "Urgente" ? "btn-primary " : ""}`} onClick={() => setFilter("Urgente")}>
-              Urgente ({UrgenteCounter})
-            </button>
+            <div className='flex flex-wrap gap-4'>
+              <button
+                className={`btn btn-soft ${filter === "Toutes" ? "btn-primary " : ""}`} onClick={() => setFilter("Toutes")}>
+                Tous ({TotalCounter})
+              </button>
+              <button
+                className={`btn btn-soft ${filter === "Urgente" ? "btn-primary " : ""}`} onClick={() => setFilter("Urgente")}>
+                Urgente ({UrgenteCounter})
+              </button>
 
-            <button
-              className={`btn btn-soft ${filter === "Moyenne" ? "btn-primary " : ""}`} onClick={() => setFilter("Moyenne")}>
-              Moyenne ({MoyenneCounter})
-            </button>
+              <button
+                className={`btn btn-soft ${filter === "Moyenne" ? "btn-primary " : ""}`} onClick={() => setFilter("Moyenne")}>
+                Moyenne ({MoyenneCounter})
+              </button>
 
-            <button
-              className={`btn btn-soft ${filter === "Basse" ? "btn-primary " : ""}`} onClick={() => setFilter("Basse")}>
-              Basse ({BasseCounter})
-            </button>
-           
-          </div>
-            <button className='btn btn-soft btn-error'
-            disabled={selectedTodos.size === 0}>
+              <button
+                className={`btn btn-soft ${filter === "Basse" ? "btn-primary " : ""}`} onClick={() => setFilter("Basse")}>
+                Basse ({BasseCounter})
+              </button>
+
+            </div>
+            <button onClick={finishedSelected}
+              className='btn btn-soft btn-error'
+              disabled={selectedTodos.size === 0}
+            >
+              
               Finir la Selection {selectedTodos.size > 0 ? `(${selectedTodos.size})` : ""}
-          </button>
-          
+
+            </button>
+
           </div>
 
 
